@@ -1,0 +1,28 @@
+name: Mirror Fixed
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout source repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push to target repo
+        run: |
+          git config --global user.name "nethajividhyalayam"
+          git config --global user.email "nethajividhyalayam@gmail.com"
+          git config --global --unset-all http.https://github.com/.extraheader || true
+          git remote add target "https://${TARGET_TOKEN}@github.com/nethajividhyalayam/Websites.git"
+          git push target --force --all
+          git push target --force --tags
+        env:
+          TARGET_TOKEN: ${{ secrets.TARGET_REPO_TOKEN1 }}
