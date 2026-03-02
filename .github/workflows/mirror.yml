@@ -7,11 +7,12 @@ on:
   repository_dispatch:
     types: [sync]
 
+permissions: write-all
+
 jobs:
   mirror:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    permissions: write-all
     steps:
       - name: Validate required secrets
         run: |
